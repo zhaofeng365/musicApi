@@ -496,9 +496,11 @@ function _default(instance) {
             pureFly: true
           }),
                 data = _yield$instance$get.data;
-
+  console.log("DDDDDDDDDDDDDDDDDDDDDDDDDsD1",data)
           const pattern = /window.Gbanners[\s\S]+?(\[[\s\S]+?\])/;
+           console.log("DDDDDDDDDDDDDDDDDDDDDDDDDsD2",pattern)
           const banners = pattern.exec(data)[1];
+             console.log("DDDDDDDDDDDDDDDDDDDDDDDDDsD3",banners)
           return {
             status: true,
             data: eval(banners)
