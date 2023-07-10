@@ -487,6 +487,7 @@ function _default(instance) {
 
     getBanner() {
       return _asyncToGenerator(function* () {
+        var _data;
         try {
           const _yield$instance$get = yield instance.get('http://music.163.com/discover', {}, {
             headers: {
@@ -495,6 +496,7 @@ function _default(instance) {
             },
             pureFly: true
           }),
+            _data = _yield$instance$get;
                 data = _yield$instance$get.data;
   console.log("DDDDDDDDDDDDDDDDDDDDDDDDDsD1",data)
           const pattern = /window.Gbanners[\s\S]+?(\[[\s\S]+?\])/;
@@ -508,7 +510,7 @@ function _default(instance) {
         } catch (e) {
           return {
             status: false,
-            msg: '请求失败',
+            msg: '请求失败'+_data,
             log: e
           };
         }
