@@ -412,8 +412,11 @@ export default function (instance) {
                     },
                     pureFly: true
                 })
+                console.log("banner=====================1",data)
                 const pattern = /window.Gbanners[\s\S]+?(\[[\s\S]+?\])/;
+                console.log("banner=====================2",pattern)
                 const banners = pattern.exec(data)[1]
+                console.log("banner=====================3",banners)
                 return {
                     status: true,
                     data: eval(banners)
