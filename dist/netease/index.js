@@ -4,24 +4,18 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
-
 var _util = require("../util");
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 function _default(instance) {
   // getRestrictLevel方法 来源于网易云音乐web端代码
   const getRestrictLevel = function getRestrictLevel(bm5r, fC7v) {
     if (!bm5r) return 0;
     if (bm5r.program) return 0;
-
     if (fC7v) {
       if (fC7v.st != null && fC7v.st < 0) {
         return 100;
       }
-
       if (fC7v.fee > 0 && fC7v.fee != 8 && fC7v.payed == 0 && fC7v.pl <= 0) return 10;
       if (fC7v.fee == 16 || fC7v.fee == 4 && fC7v.flag & 2048) return 11;
       if ((fC7v.fee == 0 || fC7v.payed) && fC7v.pl > 0 && fC7v.dl == 0) return 1e3;
@@ -33,28 +27,23 @@ function _default(instance) {
       if (bm5r.fee > 0) return 10;
       return 100;
     }
-  }; // 来自网易云前端 l2x.qA8s
-
-
+  };
+  // 来自网易云前端 l2x.qA8s
   function qA8s(fB4F) {
     if (fB4F.st != null && fB4F.st < 0) {
       return 100;
     }
-
     if (fB4F.fee > 0 && fB4F.fee != 8 && fB4F.payed == 0 && fB4F.pl <= 0) return 10;
     if (fB4F.fee == 16 || fB4F.fee == 4 && fB4F.flag & 2048) return 11;
     if ((fB4F.fee == 0 || fB4F.payed) && fB4F.pl > 0 && fB4F.dl == 0) return 1e3;
     if (fB4F.pl == 0 && fB4F.dl == 0) return 100;
     return 0;
   }
-
   const disable = (song, privilege) => getRestrictLevel(song, privilege) === 100 || qA8s(privilege) === 10;
-
   const getMusicInfo = (info, privilege) => {
     if (!privilege) {
       privilege = info.privilege;
     }
-
     return {
       album: {
         id: info.al.id,
@@ -81,12 +70,10 @@ function _default(instance) {
       vendor: 'netease'
     };
   };
-
   const getMusicInfo2 = (info, privilege) => {
     if (!privilege) {
       privilege = info.privilege;
     }
-
     return {
       album: {
         id: info.album.id,
@@ -113,10 +100,8 @@ function _default(instance) {
       vendor: 'netease'
     };
   };
-
   return {
     instance,
-
     searchSong({
       keyword,
       limit = 30,
@@ -132,18 +117,15 @@ function _default(instance) {
           s: keyword,
           offset
         };
-
         try {
           let _yield$instance$post = yield instance.post('/weapi/cloudsearch/get/web', params),
-              result = _yield$instance$post.result;
-
+            result = _yield$instance$post.result;
           if (!result) {
             result = {
               songCount: 0,
               songs: []
             };
           }
-
           return {
             status: true,
             data: {
@@ -161,7 +143,6 @@ function _default(instance) {
         }
       })();
     },
-
     getSongDetail(id) {
       return _asyncToGenerator(function* () {
         try {
@@ -173,14 +154,12 @@ function _default(instance) {
             csrf_token: ''
           });
           const info = data.songs[0];
-
           if (!info) {
             return {
               status: false,
               msg: _util.noSongsDetailMsg
             };
           }
-
           return {
             status: true,
             data: getMusicInfo(info, data.privileges[0])
@@ -194,11 +173,9 @@ function _default(instance) {
         }
       })();
     },
-
     getBatchSongDetail(ids) {
       return _asyncToGenerator(function* () {
         ids = ids.map(item => parseInt(item));
-
         try {
           let data = yield instance.post('/weapi/v3/song/detail', {
             c: JSON.stringify(ids.map(item => ({
@@ -224,7 +201,6 @@ function _default(instance) {
         }
       })();
     },
-
     getSongUrl(id, br = 128000) {
       return _asyncToGenerator(function* () {
         br = parseInt(br);
@@ -233,11 +209,9 @@ function _default(instance) {
           br,
           csrf_token: ''
         };
-
         try {
           let _yield$instance$post2 = yield instance.post('/weapi/song/enhance/player/url', params),
-              data = _yield$instance$post2.data;
-
+            data = _yield$instance$post2.data;
           return {
             status: true,
             data: {
@@ -255,7 +229,6 @@ function _default(instance) {
         }
       })();
     },
-
     getLyric(id) {
       return _asyncToGenerator(function* () {
         try {
@@ -264,21 +237,17 @@ function _default(instance) {
           }, {
             crypto: 'linuxapi'
           });
-
           if (data.lrc && data.lrc.lyric) {
             const translateDecodeData = (0, _util.lyric_decode)(data.tlyric.lyric) || [];
             const translate = [];
-
             for (let i = 0; i < translateDecodeData.length - 1; i++) {
               if (translateDecodeData[i][1] !== translateDecodeData[i + 1][1]) {
                 translate.push(translateDecodeData[i]);
               }
             }
-
             if (translateDecodeData.length) {
               translate.push(translateDecodeData.pop());
             }
-
             return {
               status: true,
               data: {
@@ -304,20 +273,18 @@ function _default(instance) {
         }
       })();
     },
-
     getTopList(id, limit = 1000) {
       return _asyncToGenerator(function* () {
         try {
           const _yield$instance$post3 = yield instance.post('/weapi/v3/playlist/detail', {
-            id,
-            offset: 0,
-            total: true,
-            n: limit,
-            csrf_token: ""
-          }),
-                playlist = _yield$instance$post3.playlist,
-                privileges = _yield$instance$post3.privileges;
-
+              id,
+              offset: 0,
+              total: true,
+              n: limit,
+              csrf_token: ""
+            }),
+            playlist = _yield$instance$post3.playlist,
+            privileges = _yield$instance$post3.privileges;
           return {
             status: true,
             data: {
@@ -337,20 +304,18 @@ function _default(instance) {
         }
       })();
     },
-
     getComment(rid, page, limit = 20) {
       return _asyncToGenerator(function* () {
         try {
           let _yield$instance$post4 = yield instance.post('/weapi/v1/resource/comments/R_SO_4_' + rid + '/?csrf_token=', {
-            offset: (page - 1) * limit,
-            rid,
-            limit,
-            csrf_token: ""
-          }),
-              hotComments = _yield$instance$post4.hotComments,
-              comments = _yield$instance$post4.comments,
-              total = _yield$instance$post4.total;
-
+              offset: (page - 1) * limit,
+              rid,
+              limit,
+              csrf_token: ""
+            }),
+            hotComments = _yield$instance$post4.hotComments,
+            comments = _yield$instance$post4.comments,
+            total = _yield$instance$post4.total;
           return {
             status: true,
             data: {
@@ -368,7 +333,6 @@ function _default(instance) {
         }
       })();
     },
-
     getArtistSongs(id, offset, limit) {
       return _asyncToGenerator(function* () {
         try {
@@ -398,40 +362,33 @@ function _default(instance) {
         }
       })();
     },
-
     getPlaylistDetail(id, offset, limit) {
       var _this = this;
-
       return _asyncToGenerator(function* () {
         try {
           const _yield$instance$post5 = yield instance.post(`/weapi/v3/playlist/detail`, {
-            id,
-            n: limit,
-            s: 8,
-            csrf_token: ""
-          }),
-                playlist = _yield$instance$post5.playlist;
-
+              id,
+              n: limit,
+              s: 8,
+              csrf_token: ""
+            }),
+            playlist = _yield$instance$post5.playlist;
           const songs = [];
           let bufferSongIds = [];
-
           for (let i = 0; i < playlist.trackIds.length; i++) {
             const track = playlist.trackIds[i];
-            bufferSongIds.push(track.id); // 到阈值或到最后一个
-
+            bufferSongIds.push(track.id);
+            // 到阈值或到最后一个
             if (bufferSongIds.length === 1000 || i === playlist.trackIds.length - 1) {
               const _yield$_this$getBatch = yield _this.getBatchSongDetail(bufferSongIds),
-                    status = _yield$_this$getBatch.status,
-                    data = _yield$_this$getBatch.data;
-
+                status = _yield$_this$getBatch.status,
+                data = _yield$_this$getBatch.data;
               if (status) {
                 songs.push(...data);
               }
-
               bufferSongIds = [];
             }
           }
-
           return {
             status: true,
             data: {
@@ -453,14 +410,12 @@ function _default(instance) {
         }
       })();
     },
-
     getAlbumDetail(id) {
       return _asyncToGenerator(function* () {
         try {
           const _yield$instance$post6 = yield instance.post(`/weapi/v1/album/${id}`, {}),
-                album = _yield$instance$post6.album,
-                songs = _yield$instance$post6.songs;
-
+            album = _yield$instance$post6.album,
+            songs = _yield$instance$post6.songs;
           return {
             status: true,
             data: {
@@ -484,25 +439,21 @@ function _default(instance) {
         }
       })();
     },
-
     getBanner() {
       return _asyncToGenerator(function* () {
-        var _data;
         try {
           const _yield$instance$get = yield instance.get('http://music.163.com/discover', {}, {
-            headers: {
-              Referer: "http://music.163.com",
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3380.0 Safari/537.36"
-            },
-            pureFly: true
-          }),
-            _data = _yield$instance$get;
-                data = _yield$instance$get.data;
-  console.log("DDDDDDDDDDDDDDDDDDDDDDDDDsD1",data)
-          const pattern = /window.Gbanners[\s\S]+?(\[[\s\S]+?\])/;
-           console.log("DDDDDDDDDDDDDDDDDDDDDDDDDsD2",pattern)
-          const banners = pattern.exec(data)[1];
-             console.log("DDDDDDDDDDDDDDDDDDDDDDDDDsD3",banners)
+              headers: {
+                Referer: "http://music.163.com",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3380.0 Safari/537.36"
+              },
+              pureFly: true
+            }),
+            data = _yield$instance$get.data;
+          const pattern = /window.Gbanners[\s\S]=\[[\s\S]+(window.ftlProfileId)/;
+          // console.log("patternsss=================sss====", pattern.exec(data));
+          const banners = pattern.exec(data)[0].replace("window.Gbanners", "").replace("=", "").replace("window.ftlProfileId", "");
+          //console.log("11111111111==", banners);
           return {
             status: true,
             data: eval(banners)
@@ -510,21 +461,19 @@ function _default(instance) {
         } catch (e) {
           return {
             status: false,
-            msg: '请求失败'+_data,
+            msg: '请求失败',
             log: e
           };
         }
       })();
     },
-
     getMvDetail(id) {
       return _asyncToGenerator(function* () {
         try {
           const _yield$instance$post7 = yield instance.post(`/weapi/mv/detail`, {
-            id
-          }),
-                data = _yield$instance$post7.data;
-
+              id
+            }),
+            data = _yield$instance$post7.data;
           return {
             status: true,
             data
@@ -538,7 +487,6 @@ function _default(instance) {
         }
       })();
     },
-
     getMvComment(id, page = 1, limit = 20) {
       return _asyncToGenerator(function* () {
         try {
@@ -565,7 +513,6 @@ function _default(instance) {
         }
       })();
     },
-
     getTopPlaylist(cat = '全部', page = 1, limit = 20) {
       return _asyncToGenerator(function* () {
         try {
@@ -588,17 +535,15 @@ function _default(instance) {
         }
       })();
     },
-
     getNewestMvs(limit = 20) {
       return _asyncToGenerator(function* () {
         try {
           const _yield$instance$post8 = yield instance.post('/weapi/mv/first', {
-            total: true,
-            limit,
-            csrf_token: ""
-          }),
-                data = _yield$instance$post8.data;
-
+              total: true,
+              limit,
+              csrf_token: ""
+            }),
+            data = _yield$instance$post8.data;
           return {
             status: true,
             data
@@ -612,7 +557,6 @@ function _default(instance) {
         }
       })();
     },
-
     getRecommendSongs(page = 1, limit = 30) {
       return _asyncToGenerator(function* () {
         try {
@@ -634,7 +578,6 @@ function _default(instance) {
         }
       })();
     },
-
     getPersonalizedPlaylist(page = 1, limit = 30) {
       return _asyncToGenerator(function* () {
         try {
@@ -657,7 +600,6 @@ function _default(instance) {
         }
       })();
     },
-
     getAllTopList() {
       return _asyncToGenerator(function* () {
         try {
@@ -685,6 +627,5 @@ function _default(instance) {
         }
       })();
     }
-
   };
 }
