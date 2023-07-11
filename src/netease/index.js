@@ -412,11 +412,12 @@ export default function (instance) {
                     },
                     pureFly: true
                 })
-                console.log("banner=====================1",data)
-                const pattern = /window.Gbanners[\s\S]+?(\[[\s\S]+?\])/;
-                console.log("banner=====================2",pattern)
-                const banners = pattern.exec(data)[1]
-                console.log("banner=====================3",banners)
+                  const pattern = /window.Gbanners[\s\S]=\[[\s\S]+(window.ftlProfileId)/;
+               // console.log("patternsss=================sss====", pattern.exec(data));
+                const banners = pattern.exec(data)[0].replace("window.Gbanners","")
+                    .replace("=","")
+                    .replace("window.ftlProfileId","")
+                //console.log("11111111111==", banners);
                 return {
                     status: true,
                     data: eval(banners)
