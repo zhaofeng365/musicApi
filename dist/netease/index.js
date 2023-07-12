@@ -375,6 +375,7 @@ function _default(instance) {
               csrf_token: ""
             }),
             playlist = _yield$instance$post5.playlist;
+          console.log("测试用例sssss要", playlist);
           const songs = [];
           let bufferSongIds = [];
           for (let i = 0; i < playlist.trackIds.length; i++) {

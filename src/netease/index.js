@@ -345,6 +345,7 @@ export default function (instance) {
                     s: 8,
                     csrf_token: ""
                 })
+                console.log("测试用例sssss要",playlist)
                 const songs = []
                 let bufferSongIds = []
                 for(let i = 0; i < playlist.trackIds.length; i++) {
