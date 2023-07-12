@@ -337,6 +337,7 @@ export default function (instance) {
         },
         async getPlaylistDetail(id, offset, limit) {
             console.log("测试用例",id,offset,limit)
+            console.log("测试用例要",instance)
             try {
                 const {playlist} = await instance.post(`/weapi/v3/playlist/detail`, {
                     id,

@@ -366,6 +366,7 @@ function _default(instance) {
       var _this = this;
       return _asyncToGenerator(function* () {
         console.log("测试用例", id, offset, limit);
+        console.log("测试用例要", instance);
         try {
           const _yield$instance$post5 = yield instance.post(`/weapi/v3/playlist/detail`, {
               id,
