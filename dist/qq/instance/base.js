@@ -4,22 +4,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
-
 var _util = require("../../util");
-
 const getACSRFToken = function getACSRFToken(cookie) {
   function e(e) {
     for (var n = 5381, o = 0, t = e.length; t > o; ++o) n += (n << 5) + e.charCodeAt(o);
-
     return 2147483647 & n;
   }
-
   return e(cookie);
 };
-
 function _default(createInstance) {
-  const fly = createInstance(); // fly.config.proxy = 'http://localhost:8888'
-
+  const fly = createInstance();
+  // fly.config.proxy = 'http://localhost:8888'
   fly.config.baseURL = 'https://c.y.qq.com';
   fly.config.timeout = 5000;
   fly.config.parseJson = false;
@@ -32,15 +27,12 @@ function _default(createInstance) {
     if (config.newApi) {
       config.baseURL = 'https://u.y.qq.com';
       delete config.newApi;
-    } // 浏览器且本地有cookie信息 接口就都带上cookie
-
-
+    }
+    // 浏览器且本地有cookie信息 接口就都带上cookie
     let loginUin = 0;
     let g_tk = 5381;
-
     if (_util.isBrowser) {
       const loginCookies = window.localStorage.getItem('@suen/music-api-qq-login-cookie');
-
       if (loginCookies) {
         try {
           config.headers.Cookie = loginCookies;
@@ -55,7 +47,6 @@ function _default(createInstance) {
         }
       }
     }
-
     config.body = Object.assign({}, {
       g_tk,
       format: 'jsonp',
@@ -78,9 +69,8 @@ function _default(createInstance) {
         status: false,
         msg: '请求无结果'
       });
-    } // 是否有回调
-
-
+    }
+    // 是否有回调
     let hasCallback = false;
     const callbackArr = ['callback', 'jsonCallback', 'MusicJsonCallback'];
     callbackArr.forEach(item => {
@@ -91,16 +81,14 @@ function _default(createInstance) {
         hasCallback = true;
       }
     });
-
     if (!hasCallback) {
       return Promise.reject({
         status: false,
         msg: '请求结果错误',
         log: res.data
       });
-    } // code是否正确
-
-
+    }
+    // code是否正确
     if (!res.request.nocode && res.data.code !== 0) {
       return Promise.reject({
         status: false,
@@ -108,7 +96,6 @@ function _default(createInstance) {
         log: res.data
       });
     }
-
     return res.data;
   }, e => {
     console.warn(e);

@@ -3,14 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.netease = exports.qq = void 0;
-
+exports.qq = exports.netease = exports.default = void 0;
 var _musicApi = _interopRequireDefault(require("./music-api"));
-
 var _flyio = _interopRequireDefault(require("./util/flyio.node"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 const app = (0, _musicApi.default)(_flyio.default);
 const qq = app.qq;
 exports.qq = qq;

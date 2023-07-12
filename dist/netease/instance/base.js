@@ -4,18 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
-
 var _util = require("../../util");
-
 var _crypto = _interopRequireDefault(require("../crypto"));
-
 var _querystring = _interopRequireDefault(require("querystring"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _default(createInstance) {
-  const fly = createInstance(); // fly.config.proxy = 'http://localhost:8888'
-
+  const fly = createInstance();
+  // fly.config.proxy = 'http://localhost:8888'
   fly.config.baseURL = 'https://music.163.com';
   fly.config.timeout = 5000;
   fly.config.headers = {
@@ -31,18 +26,15 @@ function _default(createInstance) {
   };
   fly.config.rejectUnauthorized = false;
   fly.interceptors.request.use(config => {
-    if (config.pureFly) return config; // 浏览器且本地有cookie信息 接口就都带上cookie
-
+    if (config.pureFly) return config;
+    // 浏览器且本地有cookie信息 接口就都带上cookie
     if (_util.isBrowser) {
       const loginCookies = window.localStorage.getItem('@suen/music-api-netease-login-cookie');
-
       if (loginCookies) {
         config.headers.Cookie = loginCookies;
       }
     }
-
     let data;
-
     if (config.crypto === 'linuxapi') {
       data = _crypto.default.linuxapi({
         method: config.method,
@@ -53,13 +45,11 @@ function _default(createInstance) {
       config.url = '/api/linux/forward';
     } else {
       const cryptoreq = _crypto.default.weapi(config.body);
-
       data = {
         params: cryptoreq.params,
         encSecKey: cryptoreq.encSecKey
       };
     }
-
     config.body = _querystring.default.stringify(data);
     return config;
   }, e => Promise.reject(e));
@@ -67,16 +57,13 @@ function _default(createInstance) {
     if (res.request.pureFly) {
       return res;
     }
-
     if (!res.data) {
       return Promise.reject({
         status: false,
         msg: '请求无结果'
       });
     }
-
     const data = typeof res.data === 'string' ? JSON.parse(res.data) : res.data;
-
     if (data.code !== 200) {
       return Promise.reject({
         status: false,
@@ -84,7 +71,6 @@ function _default(createInstance) {
         log: res.data
       });
     }
-
     return data;
   }, e => Promise.reject(e));
   return fly;

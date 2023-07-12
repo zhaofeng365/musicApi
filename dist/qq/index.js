@@ -4,13 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
-
 var _util = require("../util");
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 function _default(instance) {
   const getMusicInfo = info => {
     const file = info.file;
@@ -40,7 +36,6 @@ function _default(instance) {
       vendor: 'qq'
     };
   };
-
   const getMusicInfo2 = info => {
     return {
       album: {
@@ -68,10 +63,8 @@ function _default(instance) {
       vendor: 'qq'
     };
   };
-
   return {
     instance,
-
     searchSong({
       keyword,
       limit = 30,
@@ -88,7 +81,6 @@ function _default(instance) {
           cr: 1,
           lossless: 0
         };
-
         try {
           let data = yield instance.get('/soso/fcgi-bin/client_search_cp', params);
           return {
@@ -103,7 +95,6 @@ function _default(instance) {
         }
       })();
     },
-
     getSongDetail(id, raw = false, type = 'songid') {
       return _asyncToGenerator(function* () {
         try {
@@ -112,14 +103,12 @@ function _default(instance) {
             tpl: 'yqq_song_detail'
           });
           const info = data.data[0];
-
           if (!info) {
             return {
               status: false,
               msg: _util.noSongsDetailMsg
             };
           }
-
           return {
             status: true,
             data: raw ? info : getMusicInfo(info)
@@ -129,7 +118,6 @@ function _default(instance) {
         }
       })();
     },
-
     getBatchSongDetail(songids) {
       return _asyncToGenerator(function* () {
         try {
@@ -146,68 +134,60 @@ function _default(instance) {
         }
       })();
     },
-
     getMid(id) {
       var _this = this;
-
       return _asyncToGenerator(function* () {
         const detailInfo = yield _this.getSongDetail(id, true);
-
         if (!detailInfo.status) {
           throw new Error(detailInfo.msg);
         }
-
         return detailInfo.data.mid;
       })();
     },
-
     getSongUrl(songid, br = 128000) {
       var _this2 = this;
-
       return _asyncToGenerator(function* () {
         br = parseInt(br);
         const mid = yield _this2.getMid(songid);
         const guid = `${Math.floor(Math.random() * 1000000000)}`;
         const uin = '0';
         let data;
-
         try {
           const _yield$instance$get = yield instance.get('/cgi-bin/musicu.fcg', {
-            data: JSON.stringify({
-              "req": {
-                "module": "CDN.SrfCdnDispatchServer",
-                "method": "GetCdnDispatch",
-                "param": {
-                  guid,
-                  "calltype": 0,
-                  "userip": ""
-                }
-              },
-              "req_0": {
-                "module": "vkey.GetVkeyServer",
-                "method": "CgiGetVkey",
-                "param": {
-                  guid,
-                  "songmid": [mid],
-                  "songtype": [0],
+              data: JSON.stringify({
+                "req": {
+                  "module": "CDN.SrfCdnDispatchServer",
+                  "method": "GetCdnDispatch",
+                  "param": {
+                    guid,
+                    "calltype": 0,
+                    "userip": ""
+                  }
+                },
+                "req_0": {
+                  "module": "vkey.GetVkeyServer",
+                  "method": "CgiGetVkey",
+                  "param": {
+                    guid,
+                    "songmid": [mid],
+                    "songtype": [0],
+                    uin,
+                    "loginflag": 1,
+                    "platform": "20"
+                  }
+                },
+                "comm": {
                   uin,
-                  "loginflag": 1,
-                  "platform": "20"
+                  "format": "json",
+                  "ct": 24,
+                  "cv": 0
                 }
-              },
-              "comm": {
-                uin,
-                "format": "json",
-                "ct": 24,
-                "cv": 0
-              }
-            })
-          }, {
-            newApi: true
-          }),
-                freeflowsip = _yield$instance$get.req.data.freeflowsip,
-                midurlinfo = _yield$instance$get.req_0.data.midurlinfo;
-
+              })
+            }, {
+              newApi: true
+            }),
+            freeflowsip = _yield$instance$get.req.data.freeflowsip,
+            midurlinfo = _yield$instance$get.req_0.data.midurlinfo;
           const host = freeflowsip[0];
           data = {
             status: true,
@@ -222,14 +202,11 @@ function _default(instance) {
             log: e
           };
         }
-
         return data;
       })();
     },
-
     getLyric(songid) {
       var _this3 = this;
-
       return _asyncToGenerator(function* () {
         try {
           const mid = yield _this3.getMid(songid);
@@ -237,7 +214,6 @@ function _default(instance) {
             'pcachetime': Date.parse(new Date()),
             'songmid': mid
           });
-
           if (data.lyric) {
             return {
               status: true,
@@ -260,24 +236,22 @@ function _default(instance) {
         }
       })();
     },
-
     getComment(songid, page = 1, pagesize = 20) {
       return _asyncToGenerator(function* () {
         try {
           const _yield$instance$get2 = yield instance.get('/base/fcgi-bin/fcg_global_comment_h5.fcg', {
-            reqtype: 2,
-            biztype: 1,
-            topid: songid,
-            cmd: 8,
-            needmusiccrit: 0,
-            pagenum: page - 1,
-            pagesize,
-            lasthotcommentid: '',
-            domain: 'qq.com'
-          }),
-                comment = _yield$instance$get2.comment,
-                hot_comment = _yield$instance$get2.hot_comment;
-
+              reqtype: 2,
+              biztype: 1,
+              topid: songid,
+              cmd: 8,
+              needmusiccrit: 0,
+              pagenum: page - 1,
+              pagesize,
+              lasthotcommentid: '',
+              domain: 'qq.com'
+            }),
+            comment = _yield$instance$get2.comment,
+            hot_comment = _yield$instance$get2.hot_comment;
           return {
             status: true,
             data: {
@@ -291,7 +265,6 @@ function _default(instance) {
         }
       })();
     },
-
     getArtistSongs(id, offset, limit) {
       return _asyncToGenerator(function* () {
         try {
@@ -304,10 +277,8 @@ function _default(instance) {
             num: limit,
             songstatus: 1
           };
-
           const _yield$instance$get3 = yield instance.get('/v8/fcg-bin/fcg_v8_singer_track_cp.fcg', params),
-                data = _yield$instance$get3.data;
-
+            data = _yield$instance$get3.data;
           return {
             status: true,
             data: {
@@ -325,7 +296,6 @@ function _default(instance) {
         }
       })();
     },
-
     getPlaylistDetail(id, offset, limit) {
       return _asyncToGenerator(function* () {
         try {
@@ -334,10 +304,8 @@ function _default(instance) {
             onlysong: 0,
             disstid: id
           };
-
           const _yield$instance$get4 = yield instance.get('/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg', params),
-                cdlist = _yield$instance$get4.cdlist;
-
+            cdlist = _yield$instance$get4.cdlist;
           return {
             status: true,
             data: {
@@ -355,7 +323,6 @@ function _default(instance) {
         }
       })();
     },
-
     getMusicu(data) {
       return instance.get('/cgi-bin/musicu.fcg', {
         data: JSON.stringify(data)
@@ -363,42 +330,38 @@ function _default(instance) {
         newApi: true
       });
     },
-
     getArtists(offset = 0, param) {
       var _this4 = this;
-
       return _asyncToGenerator(function* () {
         const _ref = param || {},
-              _ref$area = _ref.area,
-              area = _ref$area === void 0 ? -100 : _ref$area,
-              _ref$sex = _ref.sex,
-              sex = _ref$sex === void 0 ? -100 : _ref$sex,
-              _ref$genre = _ref.genre,
-              genre = _ref$genre === void 0 ? -100 : _ref$genre,
-              _ref$index = _ref.index,
-              index = _ref$index === void 0 ? -100 : _ref$index;
-
+          _ref$area = _ref.area,
+          area = _ref$area === void 0 ? -100 : _ref$area,
+          _ref$sex = _ref.sex,
+          sex = _ref$sex === void 0 ? -100 : _ref$sex,
+          _ref$genre = _ref.genre,
+          genre = _ref$genre === void 0 ? -100 : _ref$genre,
+          _ref$index = _ref.index,
+          index = _ref$index === void 0 ? -100 : _ref$index;
         try {
           const _yield$_this4$getMusi = yield _this4.getMusicu({
-            comm: {
-              ct: 24,
-              cv: 10000
-            },
-            singerList: {
-              module: 'Music.SingerListServer',
-              method: 'get_singer_list',
-              param: {
-                area,
-                sex,
-                genre,
-                index,
-                sin: offset * 80,
-                cur_page: offset + 1
+              comm: {
+                ct: 24,
+                cv: 10000
+              },
+              singerList: {
+                module: 'Music.SingerListServer',
+                method: 'get_singer_list',
+                param: {
+                  area,
+                  sex,
+                  genre,
+                  index,
+                  sin: offset * 80,
+                  cur_page: offset + 1
+                }
               }
-            }
-          }),
-                singerList = _yield$_this4$getMusi.singerList;
-
+            }),
+            singerList = _yield$_this4$getMusi.singerList;
           return {
             status: true,
             data: singerList.data
@@ -408,16 +371,14 @@ function _default(instance) {
         }
       })();
     },
-
     getAlbumDetail(id) {
       return _asyncToGenerator(function* () {
         try {
           const _yield$instance$get5 = yield instance.get('https://c.y.qq.com/v8/fcg-bin/fcg_v8_album_info_cp.fcg', {
-            albumid: id,
-            tpl: 'yqq_song_detail'
-          }),
-                data = _yield$instance$get5.data;
-
+              albumid: id,
+              tpl: 'yqq_song_detail'
+            }),
+            data = _yield$instance$get5.data;
           return {
             status: true,
             data: {
@@ -437,7 +398,6 @@ function _default(instance) {
         }
       })();
     },
-
     getAllTopList() {
       return _asyncToGenerator(function* () {
         const params = {
@@ -446,7 +406,6 @@ function _default(instance) {
           tpl: 'macv4',
           v8debug: 1
         };
-
         try {
           let data = yield instance.get('/v8/fcg-bin/fcg_v8_toplist_opt.fcg', params, {
             nocode: true
@@ -476,7 +435,6 @@ function _default(instance) {
         }
       })();
     },
-
     getTopList(id) {
       return _asyncToGenerator(function* () {
         const params = {
@@ -486,7 +444,6 @@ function _default(instance) {
           page: 'detail',
           type: 'top'
         };
-
         try {
           let data = yield instance.get('/v8/fcg-bin/fcg_v8_toplist_cp.fcg', params);
           return {
@@ -504,13 +461,11 @@ function _default(instance) {
         }
       })();
     },
-
     getUserInfo() {
       return _asyncToGenerator(function* () {
         try {
           const _yield$instance$get6 = yield instance.get('/portalcgi/fcgi-bin/music_mini_portal/fcg_getuser_infoEx.fcg'),
-                data = _yield$instance$get6.data;
-
+            data = _yield$instance$get6.data;
           return {
             status: true,
             data
@@ -520,27 +475,24 @@ function _default(instance) {
         }
       })();
     },
-
     getRecommendPlaylist() {
       var _this5 = this;
-
       return _asyncToGenerator(function* () {
         try {
           const _yield$_this5$getMusi = yield _this5.getMusicu({
-            'comm': {
-              'ct': 24
-            },
-            'recomPlaylist': {
-              'method': 'get_hot_recommend',
-              'param': {
-                'async': 1,
-                'cmd': 2
+              'comm': {
+                'ct': 24
               },
-              'module': 'playlist.HotRecommendServer'
-            }
-          }),
-                recomPlaylist = _yield$_this5$getMusi.recomPlaylist;
-
+              'recomPlaylist': {
+                'method': 'get_hot_recommend',
+                'param': {
+                  'async': 1,
+                  'cmd': 2
+                },
+                'module': 'playlist.HotRecommendServer'
+              }
+            }),
+            recomPlaylist = _yield$_this5$getMusi.recomPlaylist;
           return {
             status: true,
             data: recomPlaylist.data.v_hot
@@ -550,29 +502,26 @@ function _default(instance) {
         }
       })();
     },
-
     getRecommendSongs(page = 1, limit = 30) {
       var _this6 = this;
-
       return _asyncToGenerator(function* () {
         try {
           const _yield$_this6$getMusi = yield _this6.getMusicu({
-            "comm": {
-              "ct": 6,
-              "cv": 50500
-            },
-            "get_daily_track": {
-              "module": "music.ai_track_daily_svr",
-              "method": "get_daily_track",
-              "param": {
-                "id": 99,
-                "cmd": 0,
-                "page": page - 1
+              "comm": {
+                "ct": 6,
+                "cv": 50500
+              },
+              "get_daily_track": {
+                "module": "music.ai_track_daily_svr",
+                "method": "get_daily_track",
+                "param": {
+                  "id": 99,
+                  "cmd": 0,
+                  "page": page - 1
+                }
               }
-            }
-          }),
-                get_daily_track = _yield$_this6$getMusi.get_daily_track;
-
+            }),
+            get_daily_track = _yield$_this6$getMusi.get_daily_track;
           return {
             status: true,
             data: get_daily_track.data.tracks.map(item => getMusicInfo(item))
@@ -582,6 +531,5 @@ function _default(instance) {
         }
       })();
     }
-
   };
 }
