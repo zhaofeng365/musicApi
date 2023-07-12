@@ -339,7 +339,7 @@ export default function (instance) {
             console.log("测试用例",id,offset,limit)
             console.log("测试用例要",instance)
             try {
-                const {playlist} = await instance.post(`/weapi/v3/playlist/detail`, {
+                const {playlist} = await instance.post(`/playlist/detail`, {
                     id,
                     n: limit,
                     s: 8,
